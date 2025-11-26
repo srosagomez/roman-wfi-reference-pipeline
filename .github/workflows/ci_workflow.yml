@@ -14,13 +14,13 @@ jobs:
         python-version: ["3.12"]
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@712eefadba5f7096ac20767477bcca870b150b98 # initial
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@712eefadba5f7096ac20767477bcca870b150b98 # initial
       with:
         python-version: ${{ matrix.python-version }}
     - name: Cache pip dependencies
-      uses: actions/cache@v4
+      uses: actions/cache@712eefadba5f7096ac20767477bcca870b150b98 # initial
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
