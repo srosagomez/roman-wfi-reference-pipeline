@@ -5,9 +5,12 @@ import numpy as np
 import roman_datamodels.stnode as rds
 from astropy import units as u
 
+from wfi_reference_pipeline.constants import (
+    DETECTOR_PIXEL_X_COUNT,
+    DETECTOR_PIXEL_Y_COUNT,
+)
 from wfi_reference_pipeline.reference_types.data_cube import DataCube
 from wfi_reference_pipeline.resources.wfi_meta_dark import WFIMetaDark
-from wfi_reference_pipeline.constants import DETECTOR_PIXEL_X_COUNT, DETECTOR_PIXEL_Y_COUNT
 
 from ..reference_type import ReferenceType
 
@@ -177,7 +180,7 @@ class Dark(ReferenceType):
         """
 
         # Uncertainity values from the Table 1, in DN/s, from Betti et al. 2025
-        DETECTOR_RATE_UNCERTAINTY = {
+        detector_rate_uncertainty = {
             "WFI01": 0.0059,
             "WFI02": 0.0035,
             "WFI03": 0.0065,
@@ -202,15 +205,15 @@ class Dark(ReferenceType):
 
         # Validate detector exists
         try:
-            sigma = DETECTOR_RATE_UNCERTAINTY[detector]
+            sigma = detector_rate_uncertainty[detector]
         except KeyError:
             raise KeyError(
                 f"Detector '{detector}' not found in DETECTOR_RATE_UNCERTAINTY "
-                f"(expected keys: {list(DETECTOR_RATE_UNCERTAINTY.keys())})."
+                f"(expected keys: {list(detector_rate_uncertainty.keys())})."
             )
 
         # Look up value from table
-        sigma = DETECTOR_RATE_UNCERTAINTY[detector]
+        sigma = detector_rate_uncertainty[detector]
         self.dark_rate_image_error = np.full(
             (DETECTOR_PIXEL_X_COUNT, DETECTOR_PIXEL_Y_COUNT),
             sigma,
