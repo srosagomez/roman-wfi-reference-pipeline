@@ -104,36 +104,36 @@ def make_test_ref(valid_test_metadata, valid_test_filelist, valid_test_reference
 
 ### Initialization Tests ###
 
-def test_successful_creation_defaults_filelist(make_test_ref):
+def test_successful_creation_defaults_filelist_passes(make_test_ref):
 
     ref_type = make_test_ref(ref_data=None)
 
     assert ref_type is not None
 
-def test_successful_creation_defaults_referencedata(make_test_ref):
+def test_successful_creation_defaults_referencedata_passes(make_test_ref):
 
     ref_type = make_test_ref(filelist=None)
 
     assert ref_type is not None
 
-def test_file_list_not_list(make_test_ref):
+def test_file_list_not_list_fails(make_test_ref):
     
     bad_file_list = "testfile1.md"
 
     with pytest.raises(ValueError):
         _ = make_test_ref(filelist=bad_file_list, ref_data=None)
 
-def test_too_many_inputs(make_test_ref):
+def test_too_many_inputs_fails(make_test_ref):
 
     with pytest.raises(ValueError):
         _ = make_test_ref()
 
-def test_no_inputs(make_test_ref):
+def test_no_inputs_fails(make_test_ref):
 
     with pytest.raises(ValueError):
         _ = make_test_ref(filelist=None, ref_data=None)
 
-def test_valid_external_bitmask(make_test_ref):
+def test_valid_external_bitmask_passes(make_test_ref):
 
     valid_bitmask = np.zeros((2,2), dtype=np.uint32)
 
@@ -141,21 +141,21 @@ def test_valid_external_bitmask(make_test_ref):
 
     assert ref_type is not None
 
-def test_bad_bitmask_wrong_type(make_test_ref):
+def test_bad_bitmask_wrong_type_fails(make_test_ref):
 
     bad_bitmask = [0]
 
     with pytest.raises(TypeError):
         _ = make_test_ref(ref_data=None, bitmask=bad_bitmask)
 
-def test_bad_bitmask_wrong_datatype(make_test_ref):
+def test_bad_bitmask_wrong_datatype_fails(make_test_ref):
 
     bad_bitmask = np.zeros((2, 2), dtype=np.int32)
 
     with pytest.raises(ValueError):
         _ = make_test_ref(ref_data=None, bitmask=bad_bitmask)
 
-def test_bad_bitmask_wrong_data_dimension(make_test_ref):
+def test_bad_bitmask_wrong_data_dimension_fails(make_test_ref):
 
     bad_bitmask = np.zeros((2, 2, 2), dtype=np.uint32)
 
@@ -165,14 +165,14 @@ def test_bad_bitmask_wrong_data_dimension(make_test_ref):
 
 ### Check Outfile Tests ###
 
-def test_check_no_outfile(make_test_ref):
+def test_check_no_outfile_fails(make_test_ref):
 
     ref_type = make_test_ref(outfile=None, ref_data=None)
     
     with pytest.raises(ValueError):
         ref_type.check_outfile()
 
-def test_check_outfile_no_clobber_with_file(make_test_ref, valid_outfile):
+def test_check_outfile_no_clobber_with_file_fails(make_test_ref, valid_outfile):
 
     valid_outfile.write_text("")
 
@@ -181,7 +181,7 @@ def test_check_outfile_no_clobber_with_file(make_test_ref, valid_outfile):
     with pytest.raises(FileExistsError):
         ref_type.check_outfile()
 
-def test_check_outfile_clobber_with_file(make_test_ref, valid_outfile):
+def test_check_outfile_clobber_with_file_passes(make_test_ref, valid_outfile):
     
     valid_outfile.write_text("")
 
@@ -191,7 +191,7 @@ def test_check_outfile_clobber_with_file(make_test_ref, valid_outfile):
 
     assert not valid_outfile.exists()
 
-def test_check_outfile_no_clobber_no_file(make_test_ref, valid_outfile):
+def test_check_outfile_no_clobber_no_file_passes(make_test_ref, valid_outfile):
 
     ref_type = make_test_ref(ref_data=None, clobber=False)
 
@@ -199,7 +199,7 @@ def test_check_outfile_no_clobber_no_file(make_test_ref, valid_outfile):
 
     assert not valid_outfile.exists()
 
-def test_check_outfile_clobber_no_file(make_test_ref, valid_outfile):
+def test_check_outfile_clobber_no_file_passes(make_test_ref, valid_outfile):
     
     ref_type = make_test_ref(ref_data=None, clobber=True)
 
@@ -209,14 +209,14 @@ def test_check_outfile_clobber_no_file(make_test_ref, valid_outfile):
 
 ### Generate Outfile Tests ###
 
-def test_generate_outfile_no_outfile(make_test_ref):
+def test_generate_outfile_no_outfile_fails(make_test_ref):
 
     ref_type = make_test_ref(outfile=None, ref_data=None)
 
     with pytest.raises(ValueError):
         ref_type.generate_outfile()
 
-def test_generate_outfile_datamodel_default_perms(make_test_ref, valid_datatree, valid_outfile, default_perms):
+def test_generate_outfile_datamodel_default_perms_passes(make_test_ref, valid_datatree, valid_outfile, default_perms):
 
     ref_type=make_test_ref(ref_data=None)
 
@@ -229,7 +229,7 @@ def test_generate_outfile_datamodel_default_perms(make_test_ref, valid_datatree,
         assert af.tree["roman"]["metadata"]["d"] == "3"
         assert af.tree["roman"]["date"] == "10-30-2020"
 
-def test_generate_outfile_datamodel_set_perms(make_test_ref, valid_datatree, valid_outfile, readonly_perms):
+def test_generate_outfile_datamodel_set_perms_passes(make_test_ref, valid_datatree, valid_outfile, readonly_perms):
 
     ref_type = make_test_ref(ref_data=None)
 
@@ -242,7 +242,7 @@ def test_generate_outfile_datamodel_set_perms(make_test_ref, valid_datatree, val
         assert af.tree["roman"]["metadata"]["d"] == "3"
         assert af.tree["roman"]["date"] == "10-30-2020"
 
-def test_generate_outfile_generate_default_perms(make_test_ref, valid_outfile, default_perms):
+def test_generate_outfile_generate_default_perms_passes(make_test_ref, valid_outfile, default_perms):
 
     ref_type = make_test_ref(ref_data=None)
 
@@ -255,7 +255,7 @@ def test_generate_outfile_generate_default_perms(make_test_ref, valid_outfile, d
         assert af.tree["roman"]["metadata"]["b"] == "B"
         assert af.tree["roman"]["date"] == "12-12-2025"
 
-def test_generate_outfile_generate_set_perms(make_test_ref, valid_outfile, readonly_perms):
+def test_generate_outfile_generate_set_perms_passes(make_test_ref, valid_outfile, readonly_perms):
 
     ref_type = make_test_ref(ref_data=None)
 
